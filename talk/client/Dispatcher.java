@@ -7,8 +7,7 @@ import talk.common.*;
 
 public class Dispatcher extends Thread {
   private final Client client;
-
-  Message message;
+  private Message message;
 
   public Dispatcher(Client client) {
     this.client = client;
@@ -16,14 +15,9 @@ public class Dispatcher extends Thread {
 
   public void run() {
     while (true) {
-      try {
-        message = (Message)client.in.readObject();
-        System.out.println("read from server:"+message.getMessage());
-      } catch (IOException e) {
-        client.display("Server has close the connection: " + e);
-        System.out.println(e);
-        break;
-      } catch (ClassNotFoundException e2) { }
+      message = client.receive();
+      System.out.println("read from server:" + message.getMessage());
+      if(message.isError()) break;
     }
   }
 

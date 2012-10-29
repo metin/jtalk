@@ -6,7 +6,7 @@ public class Message implements Serializable {
 
   static final long serialVersionUID = 5219383205614652851L;
 
-  static public final int WHOISIN = 0, MESSAGE = 1, LOGOUT = 2;
+  static public final int ERROR = -1, WHOISIN = 0, MESSAGE = 1, LOGOUT = 2, USER = 3;
   private int type;
   private String message;
 
@@ -25,5 +25,9 @@ public class Message implements Serializable {
 
   public String getMessage() {
     return message;
+  }
+
+  public boolean isError() {
+    return type == ERROR;
   }
 }

@@ -72,4 +72,12 @@ public class Client {
     }catch(Exception e) {}
   }
 
+  public Message receive(){
+    try {
+      return (Message)in.readObject();
+    } catch(Exception e) { 
+      return new Message(Message.ERROR);
+    } 
+  }
+
 }
