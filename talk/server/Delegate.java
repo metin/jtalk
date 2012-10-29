@@ -13,6 +13,7 @@ public class Delegate extends Thread {
   Message cm;
   String date;
   Server server;
+  public DateFormatter formatter = new DateFormatter();
 
   Delegate(Socket socket, Server server) {
     id = ++server.uniqueId;
@@ -62,7 +63,7 @@ public class Delegate extends Thread {
           keepGoing = false;
           break;
         case Message.WHOISIN:
-          writeMsg("List of the users connected at " + server.sdf.format(new Date()) + "\n");
+          writeMsg("List of the users connected at " + formatter.format(new Date()) + "\n");
           for(int i = 0; i < server.al.size(); ++i) {
             Delegate ct = server.al.get(i);
             writeMsg((i+1) + ") " + ct.username + " since " + ct.date);

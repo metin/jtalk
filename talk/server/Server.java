@@ -8,13 +8,13 @@ import talk.common.*;
 public class Server {
   public static int uniqueId;
   public ArrayList<Delegate> al;
-  public SimpleDateFormat sdf;
+  public DateFormatter formatter;
   private int port;
   private boolean keepGoing;
 
   public Server(int port) {
     this.port = port;
-    sdf = new SimpleDateFormat("HH:mm:ss");
+    formatter = new DateFormatter();
     al = new ArrayList<Delegate>();
   }
   
@@ -46,7 +46,7 @@ public class Server {
         display("Exception closing the server and clients: " + e);
       }
     } catch (IOException e) {
-      String msg = sdf.format(new Date()) + " Exception on new ServerSocket: " + e + "\n";
+      String msg = formatter.format(new Date()) + " Exception on new ServerSocket: " + e + "\n";
       display(msg);
     }
   }   
@@ -60,12 +60,12 @@ public class Server {
   }
 
   public void display(String msg) {
-    String time = sdf.format(new Date()) + " " + msg;
+    String time = formatter.format(new Date()) + " " + msg;
     System.out.println(time);
   }
 
   public synchronized void broadcast(String message) {
-    String time = sdf.format(new Date());
+    String time = formatter.format(new Date());
     String messageLf = time + " " + message + "\n";
     System.out.print(messageLf);
     
