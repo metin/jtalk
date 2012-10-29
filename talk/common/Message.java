@@ -30,4 +30,9 @@ public class Message implements Serializable {
   public boolean isError() {
     return type == ERROR;
   }
+
+  public boolean isLogout() {
+    return type == LOGOUT;
+  }
+
 }

@@ -18,23 +18,18 @@ public class Start {
     if(!client.connect())
       return;
 
+    Sender sender = new Sender(client);
     Scanner scan = new Scanner(System.in);
+    RequestParser parser;
     while(true) {
       System.out.print("> ");
       String msg = scan.nextLine();
-      if(msg.equalsIgnoreCase("LOGOUT")) {
-        client.send(new Message(Message.LOGOUT));
-        break;
-      }
-      else if(msg.equalsIgnoreCase("WHOISIN")) {
-        client.send(new Message(Message.WHOISIN));
-      }
-      else {
-        client.send(new Message(Message.MESSAGE, msg));
-      }
+      parser = new RequestParser(msg);
+      Message to_send = parser.parse();
+      sender.send(parser.parse());
+      if(to_send.isLogout()) break;
     }
     client.disconnect();
   }
-
 }
 
