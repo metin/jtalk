@@ -3,9 +3,12 @@ package talk.client;
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import talk.common.*;
 
 public class Dispatcher extends Thread {
   private final Client client;
+
+  Message message;
 
   public Dispatcher(Client client) {
     this.client = client;
@@ -14,8 +17,8 @@ public class Dispatcher extends Thread {
   public void run() {
     while (true) {
       try {
-        String msg = (String) client.in.readObject();
-        System.out.println("read from server:"+msg);
+        message = (Message)client.in.readObject();
+        System.out.println("read from server:"+message.getMessage());
       } catch (IOException e) {
         client.display("Server has close the connection: " + e);
         System.out.println(e);

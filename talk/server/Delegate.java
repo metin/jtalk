@@ -95,7 +95,8 @@ public class Delegate extends Thread {
       return false;
     }
     try {
-      out.writeObject(msg);
+      Message m = new Message(Message.MESSAGE, msg);
+      out.writeObject(m);
     }
     catch(IOException e) {
       display("Error sending message to " + username);
