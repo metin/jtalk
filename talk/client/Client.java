@@ -52,7 +52,7 @@ public class Client {
     System.out.println(msg);
   }
   
-  public void sendMessage(Message msg) {
+  public void send(Message msg) {
     try {
       out.writeObject(msg);
     } catch(IOException e) {

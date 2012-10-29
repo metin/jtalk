@@ -23,14 +23,14 @@ public class Start {
       System.out.print("> ");
       String msg = scan.nextLine();
       if(msg.equalsIgnoreCase("LOGOUT")) {
-        client.sendMessage(new Message(Message.LOGOUT));
+        client.send(new Message(Message.LOGOUT));
         break;
       }
       else if(msg.equalsIgnoreCase("WHOISIN")) {
-        client.sendMessage(new Message(Message.WHOISIN));
+        client.send(new Message(Message.WHOISIN));
       }
       else {
-        client.sendMessage(new Message(Message.MESSAGE, msg));
+        client.send(new Message(Message.MESSAGE, msg));
       }
     }
     client.disconnect();
