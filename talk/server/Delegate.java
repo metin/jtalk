@@ -63,10 +63,10 @@ public class Delegate extends Thread {
           keepGoing = false;
           break;
         case Message.WHOISIN:
-          writeMsg("List of the users connected at " + formatter.format(new Date()) + "\n");
+          send("List of the users connected at " + formatter.format(new Date()) + "\n");
           for(int i = 0; i < server.al.size(); ++i) {
             Delegate ct = server.al.get(i);
-            writeMsg((i+1) + ") " + ct.username + " since " + ct.date);
+            send((i+1) + ") " + ct.username + " since " + ct.date);
           }
           break;
       }
@@ -90,7 +90,7 @@ public class Delegate extends Thread {
     catch (Exception e) {}
   }
 
-  public boolean writeMsg(String msg) {
+  public boolean send(String msg) {
     if(!socket.isConnected()) {
       close();
       return false;

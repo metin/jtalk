@@ -74,7 +74,7 @@ public class Server {
     for(int i = al.size(); --i >= 0;) {
       Delegate ct = al.get(i);
       // try to write to the Client if it fails remove it from the list
-      if(!ct.writeMsg(messageLf)) {
+      if(!ct.send(messageLf)) {
         al.remove(i);
         display("Disconnected Client " + ct.username + " removed from list.");
       }
