@@ -16,18 +16,29 @@ public class Dispatcher extends Thread {
   public void run() {
     while (true) {
       message = client.receive();
-      System.out.println("read from server:" + message.getMessage());
+      switch(message.getType()) {
+        case Message.MESSAGE:
+          display("from server:" + message.getMessage());
+          break;
+        case Message.USER:
+          OneToOneMessage oms = (OneToOneMessage) message;
+          display("from" + oms.from + " :" + oms.getMessage());
+          break;
+        case Message.WHOISIN:
+          UserList ul = (UserList) message;
+          ArrayList<User> users = ul.getUsers();
+          for(int i = 0; i < users.size(); i++) {
+            User u = users.get(i);
+            display(""+i+")" + u.getId() + " :" + u.getName());
+          }
+          
+      }
       if(message.isError()) break;
     }
   }
 
-  public String stackTraceToString(Throwable e) {
-    StringBuilder sb = new StringBuilder();
-    for (StackTraceElement element : e.getStackTrace()) {
-      sb.append(element.toString());
-      sb.append("\n");
-    }
-    return sb.toString();
+  public void display(String msg){
+    System.out.println(msg);
   }
 
 }

@@ -12,7 +12,6 @@ public class Start {
     int portNumber = 1500;
     String serverAddress = "localhost";
     String userName = args[0];
-
     Client client = new Client(serverAddress, portNumber, userName);
 
     if(!client.connect())

@@ -94,5 +94,25 @@ public class Server {
     }
   }
 
+  public Delegate find(String name){
+    for(int i = 0; i < al.size(); ++i) {
+      Delegate ct = al.get(i);
+      // found it
+      if(ct.username.equals(name)) {
+        return ct;
+      }
+    }
+    return null;
+  }
+
+  public ArrayList<User> serializedUsers(){
+    ArrayList<User> users = new ArrayList<User>();
+    for(int i = 0; i < al.size(); i++) {
+      Delegate ct = al.get(i);
+      users.add(new User(ct.id, ct.username));
+    }
+    return users;
+  }
+
 }
 

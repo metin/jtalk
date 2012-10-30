@@ -24,11 +24,14 @@ public class Delegate extends Thread {
       out = new ObjectOutputStream(socket.getOutputStream());
       in  = new ObjectInputStream(socket.getInputStream());
       username = (String) in.readObject();
-      display(username + " just connected.");
+      display("User:"+username);
+      send(Message.ACK, Integer.toString(id));
     } catch (IOException e) {
       display("Exception creating new Input/output Streams: " + e);
       return;
-    } catch (ClassNotFoundException e) { }
+    } catch (ClassNotFoundException e) { 
+      display(Helpers.stackTraceToString(e));
+    }
     date = new Date().toString() + "\n";
   }
 
@@ -54,6 +57,7 @@ public class Delegate extends Thread {
       }
 
       String message = cm.getMessage();
+      display("Type:"+cm.getType());
       switch(cm.getType()) {
         case Message.MESSAGE:
           broadcast(username + ": " + message);
@@ -64,10 +68,14 @@ public class Delegate extends Thread {
           break;
         case Message.WHOISIN:
           send("List of the users connected at " + formatter.format(new Date()) + "\n");
-          for(int i = 0; i < server.al.size(); ++i) {
-            Delegate ct = server.al.get(i);
-            send((i+1) + ") " + ct.username + " since " + ct.date);
-          }
+          UserList m = new UserList(username, server.serializedUsers());
+          send(m);
+          break;
+        case Message.USER:
+          OneToOneMessage oms = (OneToOneMessage) cm;
+          Delegate dl = server.find(oms.to);
+          oms.from = username;
+          dl.send(oms);
           break;
       }
     }
@@ -91,13 +99,21 @@ public class Delegate extends Thread {
   }
 
   public boolean send(String msg) {
+    return send(Message.MESSAGE, msg);
+  }
+
+  public boolean send(int type, String msg) {
+    Message m = new Message(type, msg);
+    return send(m);
+  }
+
+  public boolean send(Message msg) {
     if(!socket.isConnected()) {
       close();
       return false;
     }
     try {
-      Message m = new Message(Message.MESSAGE, msg);
-      out.writeObject(m);
+      out.writeObject(msg);
     }
     catch(IOException e) {
       display("Error sending message to " + username);
