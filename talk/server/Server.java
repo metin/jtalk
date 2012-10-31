@@ -34,12 +34,11 @@ public class Server {
       }
       try {
         serverSocket.close();
-        for(int i = 0; i < al.size(); ++i) {
-          Delegate tc = al.get(i);
+        for (Delegate dg : al) {
           try {
-            tc.in.close();
-            tc.out.close();
-            tc.socket.close();
+            dg.in.close();
+            dg.out.close();
+            dg.socket.close();
           } catch(IOException ex) { }
         }
       } catch(Exception e) {
@@ -67,49 +66,29 @@ public class Server {
   public synchronized void broadcast(String message) {
     String time = formatter.format(new Date());
     String messageLf = time + " " + message + "\n";
-    System.out.print(messageLf);
-    
-    // we loop in reverse order in case we would have to remove a Client
-    // because it has disconnected
-    for(int i = al.size(); --i >= 0;) {
-      Delegate ct = al.get(i);
-      // try to write to the Client if it fails remove it from the list
-      if(!ct.send(messageLf)) {
-        al.remove(i);
-        display("Disconnected Client " + ct.username + " removed from list.");
+    for (Delegate dg : al) {
+      if(!dg.send(messageLf)) {
+        remove(dg);
+        display("Disconnected Client " + dg.username + " removed from list.");
       }
     }
   }
 
-  // for a client who logoff using the LOGOUT message
-  synchronized void remove(int id) {
-    // scan the array list until we found the Id
-    for(int i = 0; i < al.size(); ++i) {
-      Delegate ct = al.get(i);
-      // found it
-      if(ct.id == id) {
-        al.remove(i);
-        return;
-      }
-    }
+  synchronized void remove(Delegate dg) {
+    al.remove(dg);
   }
 
   public Delegate find(String name){
-    for(int i = 0; i < al.size(); ++i) {
-      Delegate ct = al.get(i);
-      // found it
-      if(ct.username.equals(name)) {
-        return ct;
-      }
+    for (Delegate dg : al) {
+      if(dg.username.equals(name)) return dg;
     }
     return null;
   }
 
   public ArrayList<User> serializedUsers(){
     ArrayList<User> users = new ArrayList<User>();
-    for(int i = 0; i < al.size(); i++) {
-      Delegate ct = al.get(i);
-      users.add(new User(ct.id, ct.username));
+    for (Delegate dg : al) {
+      users.add(new User(dg.id, dg.username));
     }
     return users;
   }

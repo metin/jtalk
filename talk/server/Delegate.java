@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 import talk.common.*;
 
-public class Delegate extends Thread {
+public class Delegate extends Thread implements Comparable {
   Socket socket;
   ObjectInputStream in;
   ObjectOutputStream out;
@@ -79,7 +79,7 @@ public class Delegate extends Thread {
           break;
       }
     }
-    server.remove(id);
+    server.remove(this);
     close();
   }
   
@@ -121,4 +121,10 @@ public class Delegate extends Thread {
     }
     return true;
   }
+  @Override 
+  public int compareTo(Object o) {
+    Delegate dg = (Delegate) o; 
+    return this.id - dg.id ;
+  }
+
 }
