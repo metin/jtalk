@@ -7,7 +7,7 @@ import talk.common.*;
 
 public class Server {
   public static int uniqueId;
-  public ArrayList<Delegate> al;
+  public ArrayList<Delegate> delegates;
   public DateFormatter formatter;
   private int port;
   private boolean keepGoing;
@@ -15,7 +15,7 @@ public class Server {
   public Server(int port) {
     this.port = port;
     formatter = new DateFormatter();
-    al = new ArrayList<Delegate>();
+    delegates = new ArrayList<Delegate>();
   }
   
   public void bootUp() {
@@ -29,12 +29,12 @@ public class Server {
         if(!keepGoing)
           break;
         Delegate t = new Delegate(socket, this);
-        al.add(t);
+        delegates.add(t);
         t.start();
       }
       try {
         serverSocket.close();
-        for (Delegate dg : al) {
+        for (Delegate dg : delegates) {
           try {
             dg.in.close();
             dg.out.close();
@@ -66,7 +66,7 @@ public class Server {
   public synchronized void broadcast(String message) {
     String time = formatter.format(new Date());
     String messageLf = time + " " + message + "\n";
-    for (Delegate dg : al) {
+    for (Delegate dg : delegates) {
       if(!dg.send(messageLf)) {
         remove(dg);
         display("Disconnected Client " + dg.username + " removed from list.");
@@ -75,11 +75,11 @@ public class Server {
   }
 
   synchronized void remove(Delegate dg) {
-    al.remove(dg);
+    delegates.remove(dg);
   }
 
   public Delegate find(String name){
-    for (Delegate dg : al) {
+    for (Delegate dg : delegates) {
       if(dg.username.equals(name)) return dg;
     }
     return null;
@@ -87,7 +87,7 @@ public class Server {
 
   public ArrayList<User> serializedUsers(){
     ArrayList<User> users = new ArrayList<User>();
-    for (Delegate dg : al) {
+    for (Delegate dg : delegates) {
       users.add(new User(dg.id, dg.username));
     }
     return users;
