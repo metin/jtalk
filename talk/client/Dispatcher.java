@@ -18,11 +18,11 @@ public class Dispatcher extends Thread {
       message = client.receive();
       switch(message.getType()) {
         case Message.MESSAGE:
-          display("from server:" + message.getMessage());
+          display("B[" + message.getFrom() + "]: " + message.getMessage());
           break;
         case Message.USER:
           OneToOneMessage oms = (OneToOneMessage) message;
-          display("from" + oms.from + " :" + oms.getMessage());
+          display("[" + oms.from + "]: " + oms.getMessage());
           break;
         case Message.WHOISIN:
           UserList ul = (UserList) message;
@@ -31,7 +31,7 @@ public class Dispatcher extends Thread {
             User u = users.get(i);
             display(""+i+")" + u.getId() + " :" + u.getName());
           }
-          
+
       }
       if(message.isError()) break;
     }

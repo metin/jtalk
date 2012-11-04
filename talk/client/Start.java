@@ -9,9 +9,12 @@ public class Start {
 
   public static void main(String[] args) {
 
+    for(String s : args) {
+      System.out.print("arg:" + s);
+    }
     int portNumber = 1500;
     String serverAddress = "localhost";
-    String userName = args[0];
+    String userName = args[args.length-1];
     Client client = new Client(serverAddress, portNumber, userName);
 
     if(!client.connect())

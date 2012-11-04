@@ -64,11 +64,9 @@ public class Server {
     System.out.println(time);
   }
 
-  public synchronized void broadcast(String message) {
-    String time = formatter.format(new Date());
-    String messageLf = time + " " + message + "\n";
+  public synchronized void broadcast(Message message) {
     for (Delegate dg : delegates) {
-      if(!dg.send(messageLf)) {
+      if(!dg.send(message)) {
         remove(dg);
         display("Disconnected Client " + dg.username + " removed from list.");
       }

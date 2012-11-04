@@ -51,7 +51,12 @@ public class Message implements Serializable {
     this.from = from;
   }
 
+  public String getFrom() {
+    return this.from;
+  }
+
   public void setFromID(int from) {
     this.clientUID = from;
   }
+
 }

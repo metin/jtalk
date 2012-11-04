@@ -39,7 +39,7 @@ public class Delegate extends Thread implements Comparable {
     server.display(msg);
   }
 
-  public void broadcast(String message) {
+  public void broadcast(Message message) {
     server.broadcast(message);
   }
 
@@ -58,14 +58,13 @@ public class Delegate extends Thread implements Comparable {
       display("Type:"+cm.getType());
       switch(cm.getType()) {
         case Message.MESSAGE:
-          broadcast(username + ": " + message);
+          broadcast(cm);
           break;
         case Message.LOGOUT:
           display(username + " disconnected with a LOGOUT message.");
           keepGoing = false;
           break;
         case Message.WHOISIN:
-          send("List of the users connected at " + formatter.format(new Date()) + "\n");
           UserList m = new UserList(username, server.serializedUsers());
           send(m);
           break;
