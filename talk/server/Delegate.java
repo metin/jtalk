@@ -19,17 +19,13 @@ public class Delegate extends Thread implements Comparable {
     id = uid;
     this.socket = socket;
     this.server = server;
-    System.out.println("Thread trying to create Object Input/Output Streams");
     try {
       out = new ObjectOutputStream(socket.getOutputStream());
       in  = new ObjectInputStream(socket.getInputStream());
       username = (String) in.readObject();
       display("User:"+username);
       send(Message.ACK, Integer.toString(id));
-    } catch (IOException e) {
-      display("Exception creating new Input/output Streams: " + e);
-      return;
-    } catch (ClassNotFoundException e) {
+    } catch (Exception e) {
       display(Helpers.stackTraceToString(e));
     }
     date = new Date().toString() + "\n";
