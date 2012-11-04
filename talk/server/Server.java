@@ -6,7 +6,7 @@ import java.util.*;
 import talk.common.*;
 
 public class Server {
-  public static int uniqueId;
+  public static int UIDSequence;
   public ArrayList<Delegate> delegates;
   public DateFormatter formatter;
   private int port;
@@ -17,18 +17,19 @@ public class Server {
     formatter = new DateFormatter();
     delegates = new ArrayList<Delegate>();
   }
-  
+
   public void bootUp() {
     keepGoing = true;
     try {
       ServerSocket serverSocket = new ServerSocket(port);
-      while(keepGoing) 
+      while(keepGoing)
       {
         display("Server waiting for Clients on port " + port + ".");
         Socket socket = serverSocket.accept();
         if(!keepGoing)
           break;
-        Delegate t = new Delegate(socket, this);
+        UIDSequence++;
+        Delegate t = new Delegate(socket, this, UIDSequence);
         delegates.add(t);
         t.start();
       }
@@ -48,7 +49,7 @@ public class Server {
       String msg = formatter.format(new Date()) + " Exception on new ServerSocket: " + e + "\n";
       display(msg);
     }
-  }   
+  }
 
   protected void stop() {
     keepGoing = false;

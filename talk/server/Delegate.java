@@ -15,8 +15,8 @@ public class Delegate extends Thread implements Comparable {
   Server server;
   public DateFormatter formatter = new DateFormatter();
 
-  Delegate(Socket socket, Server server) {
-    id = ++server.uniqueId;
+  Delegate(Socket socket, Server server, int uid) {
+    id = uid;
     this.socket = socket;
     this.server = server;
     System.out.println("Thread trying to create Object Input/Output Streams");
@@ -29,7 +29,7 @@ public class Delegate extends Thread implements Comparable {
     } catch (IOException e) {
       display("Exception creating new Input/output Streams: " + e);
       return;
-    } catch (ClassNotFoundException e) { 
+    } catch (ClassNotFoundException e) {
       display(Helpers.stackTraceToString(e));
     }
     date = new Date().toString() + "\n";
@@ -49,10 +49,8 @@ public class Delegate extends Thread implements Comparable {
       try {
         cm = (Message) in.readObject();
       }
-      catch (IOException e) {
+      catch (Exception e) {
         display(username + " Exception reading Streams: " + e);
-        break;
-      } catch(ClassNotFoundException e2) {
         break;
       }
 
@@ -82,7 +80,7 @@ public class Delegate extends Thread implements Comparable {
     server.remove(this);
     close();
   }
-  
+
   private void close() {
     try {
       if(out != null) out.close();
@@ -121,9 +119,9 @@ public class Delegate extends Thread implements Comparable {
     }
     return true;
   }
-  @Override 
+  @Override
   public int compareTo(Object o) {
-    Delegate dg = (Delegate) o; 
+    Delegate dg = (Delegate) o;
     return this.id - dg.id ;
   }
 

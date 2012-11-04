@@ -20,7 +20,7 @@ public class Client {
     this.port = port;
     this.username = username;
   }
-  
+
   public boolean connect() {
     try {
       socket = new Socket(server, port);
@@ -28,10 +28,10 @@ public class Client {
       display(Helpers.stackTraceToString(ec));
       return false;
     }
-    
+
     String msg = "Connection accepted " + socket.getInetAddress() + ":" + socket.getPort();
     display(msg);
-  
+
     try {
       in = new ObjectInputStream(socket.getInputStream());
       out = new ObjectOutputStream(socket.getOutputStream());
@@ -57,7 +57,7 @@ public class Client {
   public void display(String msg) {
     System.out.println(msg);
   }
-  
+
   public void send(Message msg) {
     try {
       out.writeObject(msg);
@@ -67,7 +67,7 @@ public class Client {
   }
 
   public void disconnect() {
-    try { 
+    try {
       if(in != null) in.close();
     } catch(Exception e) {}
     try {
@@ -81,10 +81,10 @@ public class Client {
   public Message receive(){
     try {
       return (Message)in.readObject();
-    } catch(Exception e) { 
+    } catch(Exception e) {
       display(Helpers.stackTraceToString(e));
       return new Message(Message.ERROR);
-    } 
+    }
   }
 
   public void setUID(String str){
@@ -95,4 +95,7 @@ public class Client {
     return this.uid;
   }
 
+  public String getUsername(){
+    return this.username;
+  }
 }

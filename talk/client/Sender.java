@@ -12,6 +12,7 @@ public class Sender {
   }
 
   public void send(Message message) {
+    message.setFrom(client.getUsername());
     client.send(message);
   }
 
