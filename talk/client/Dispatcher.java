@@ -33,6 +33,11 @@ public class Dispatcher extends Thread {
           }
 
       }
+      if(client.gui != null)
+      {
+        client.gui.messageReceived(message);
+        display("sending to gui");
+      }
       if(message.isError()) break;
     }
   }

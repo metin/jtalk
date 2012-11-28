@@ -24,7 +24,6 @@ public class Start {
     Scanner scan = new Scanner(System.in);
     RequestParser parser;
     while(true) {
-      System.out.print("> ");
       String msg = scan.nextLine();
       parser = new RequestParser(msg);
       Message to_send = parser.parse();

@@ -14,11 +14,17 @@ public class Client {
   private String server, username;
   private int port;
   private String uid;
+  public  ClientGUI gui;
 
   Client(String server, int port, String username) {
     this.server = server;
     this.port = port;
     this.username = username;
+  }
+
+  Client(String server, int port, String username, ClientGUI gui) {
+    this(server, port, username);
+    this.gui = gui;
   }
 
   public boolean connect() {
