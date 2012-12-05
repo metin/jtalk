@@ -7,10 +7,10 @@ import talk.common.*;
 import java.util.*;
 
 public class ContactsPanel extends JPanel implements ActionListener {
-  private ClientGUI clientGUI;
+  public ClientGUI clientGUI;
   private JTextField tfServer, tfPort, uname;
   private JButton login, logout;
-  private JList contacts;
+  private ContactsList contacts;
   DefaultListModel contactsListModel = new DefaultListModel();
 
   ContactsPanel(ClientGUI clientGUI) {
@@ -35,9 +35,9 @@ public class ContactsPanel extends JPanel implements ActionListener {
     connection.add(login);
     add(connection, BorderLayout.NORTH);
 
-    contacts = new JList(contactsListModel);
+    contacts = new ContactsList(contactsListModel, this);
     contacts.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-    contacts.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+    contacts.setLayoutOrientation(JList.VERTICAL);
     contacts.setVisibleRowCount(-1);
     JScrollPane listScroller = new JScrollPane(contacts);
     listScroller.setPreferredSize(new Dimension(250, 80));
@@ -46,12 +46,13 @@ public class ContactsPanel extends JPanel implements ActionListener {
   }
 
   public void loadContacts(Message message){
+    contactsListModel.clear();
     UserList ul = (UserList) message;
     ArrayList<User> users = ul.getUsers();
     for(int i = 0; i < users.size(); i++) {
       User u = users.get(i);
-      contactsListModel.addElement( u.getId() + " :" + u.getName());
-      System.out.println("-----"+u.getId());
+      contactsListModel.addElement(u.getId() + " :" + u.getName());
+      System.out.println("-----" + u.getId() + " :" + u.getName());
     }
   }
 
@@ -103,10 +104,7 @@ public class ContactsPanel extends JPanel implements ActionListener {
 
   }
 
-  // to start the whole thing the client
-  public static void main(String[] args) {
-    new ClientGUI("localhost", 1500);
-  }
+
 
 }
 

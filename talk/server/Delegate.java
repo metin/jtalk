@@ -40,6 +40,9 @@ public class Delegate extends Thread implements Comparable {
   }
 
   public void run() {
+    UserList m = new UserList(username, server.serializedUsers());
+    broadcast(m);
+
     boolean keepGoing = true;
     while(keepGoing) {
       try {
@@ -61,7 +64,7 @@ public class Delegate extends Thread implements Comparable {
           keepGoing = false;
           break;
         case Message.WHOISIN:
-          UserList m = new UserList(username, server.serializedUsers());
+          m = new UserList(username, server.serializedUsers());
           send(m);
           break;
         case Message.USER:

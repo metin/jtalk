@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import talk.common.*;
-
+import java.util.*;
 
 public class ClientGUI extends JFrame implements ActionListener {
 
@@ -13,12 +13,14 @@ public class ClientGUI extends JFrame implements ActionListener {
   private JTextField tf;
   private JTextField tfServer, tfPort;
   private JButton login, logout, whoIsIn;
-  private JTextArea ta;
+  private ConversationTab generalRoom;
   private boolean connected;
   public Client client;
   private int defaultPort;
   private String defaultHost;
   private ContactsPanel contacts;
+  public ArrayList<ConversationTab> _userTabs;
+  private JTabbedPane tabbedPane;
 
   ClientGUI(String host, int port) {
 
@@ -35,10 +37,10 @@ public class ClientGUI extends JFrame implements ActionListener {
     c.gridwidth = 4;
     c.gridheight = 3;
     c.fill = GridBagConstraints.BOTH;
-    conversations.setBackground(Color.black);
-    JTabbedPane tabbedPane = new JTabbedPane();
-    JComponent panel1 = makeTextPanel("General");
-    tabbedPane.addTab("General", panel1);
+    tabbedPane = new JTabbedPane();
+    generalRoom = new ConversationTab();
+    tabbedPane.addTab("General", generalRoom);
+    _userTabs = new ArrayList<ConversationTab>();
 
     conversations.add(tabbedPane);
     add(conversations, c);
@@ -119,22 +121,25 @@ public class ClientGUI extends JFrame implements ActionListener {
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(600, 600);
     setVisible(true);
-    //tf.requestFocus();
-    int portNumber = 1500;
-    String serverAddress = "localhost";
-    String userName = "MetinGUI";
-    client = new Client(serverAddress, portNumber, userName, this);
-    client.connect();
+
+    // int portNumber = 1500;
+    // String serverAddress = "localhost";
+    // String userName = "MetinGUI";
+    // client = new Client(serverAddress, portNumber, userName, this);
+    // client.connect();
   }
 
   public void messageReceived(Message message){
     switch(message.getType()) {
       case Message.MESSAGE:
-        ta.append(message.getMessage());
+//        ta.append(message.getMessage());
+        generalRoom.add(message);
         break;
       case Message.USER:
         OneToOneMessage oms = (OneToOneMessage) message;
-        ta.append("[" + oms.from + "]: " + oms.getMessage());
+        //ta.append("[" + oms.from + "]: " + oms.getMessage());
+        ConversationTab ct = findOrCreateTab(oms.from);
+        ct.add(message);
         break;
       case Message.WHOISIN:
         contacts.loadContacts(message);
@@ -142,14 +147,24 @@ public class ClientGUI extends JFrame implements ActionListener {
     }
   }
 
-  protected JComponent makeTextPanel(String text) {
-    JPanel panel = new JPanel(false);
-    ta = new JTextArea(80, 80);
-    JScrollPane scrollPane = new JScrollPane(ta);
-    setPreferredSize(new Dimension(450, 110));
-    panel.setLayout(new GridLayout(1, 1));
-    panel.add(scrollPane);
-    return panel;
+  public ConversationTab findOrCreateTab(String from){
+    ConversationTab toCmp = new ConversationTab(from);
+    ConversationTab found = findUserTab(toCmp);
+    if(found == null){
+      _userTabs.add(toCmp);
+      tabbedPane.addTab(from, toCmp);
+    }
+    found = findUserTab(toCmp);
+    tabbedPane.setSelectedComponent(found);
+    return found;
+  }
+
+  public ConversationTab findUserTab(ConversationTab ct){
+    for (ConversationTab ut : _userTabs) {
+      System.out.println(ut.getUser()+"--" + ct.getUser());
+      if(ut.getUser().equals(ct.getUser())) return ut;
+    }
+    return null;
   }
 
   public void actionPerformed(ActionEvent e) {
@@ -168,8 +183,6 @@ public class ClientGUI extends JFrame implements ActionListener {
       tf.setText("");
       return;
     }
-
-
   }
 
   // to start the whole thing the client
