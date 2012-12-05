@@ -26,7 +26,11 @@ public class ConversationTab extends JPanel implements Comparable, ActionListene
   }
 
   public void add(Message message){
-    ta.append(message.getMessage()+"\n");
+    ta.append(message.from + ": " + message.getMessage() + "\n");
+  }
+
+  public void add(String message){
+    ta.append(message + "\n");
   }
 
   public String getUser(){
@@ -41,20 +45,16 @@ public class ConversationTab extends JPanel implements Comparable, ActionListene
 
   public void actionPerformed(ActionEvent e) {
     Object o = e.getSource();
-    // if(o == logout) {
-    //   client.send(new Message(Message.LOGOUT));
-    //   return;
-    // }
-    // if(o == whoIsIn) {
-    //   client.send(new Message(Message.WHOISIN));
-    //   return;
-    // }
-
-    // if(connected) {
-    //   client.send(new Message(Message.MESSAGE, tf.getText()));
-    //   tf.setText("");
-    //   return;
-    // }
   }
 
+  public String getMessage(String toSend){
+    if(user == null)
+      return "ALL:"+toSend;
+    else
+      return "TO:"+user+":"+toSend;
+  }
+
+  public boolean isGeneral(){
+    return user == null;
+  }
 }

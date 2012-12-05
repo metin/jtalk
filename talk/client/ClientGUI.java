@@ -12,7 +12,7 @@ public class ClientGUI extends JFrame implements ActionListener {
   private JLabel label;
   private JTextField tf;
   private JTextField tfServer, tfPort;
-  private JButton login, logout, whoIsIn;
+  private JButton send;
   private ConversationTab generalRoom;
   private boolean connected;
   public Client client;
@@ -21,6 +21,7 @@ public class ClientGUI extends JFrame implements ActionListener {
   private ContactsPanel contacts;
   public ArrayList<ConversationTab> _userTabs;
   private JTabbedPane tabbedPane;
+  private JTextArea messageArea;
 
   ClientGUI(String host, int port) {
 
@@ -47,15 +48,20 @@ public class ClientGUI extends JFrame implements ActionListener {
 
     JPanel textarea = new JPanel();
     textarea.setPreferredSize(new Dimension(450, 100));
-    textarea.setLayout(new GridLayout(1, 1));
+    textarea.setLayout(new GridLayout(1, 2));
+    messageArea = new JTextArea();
+    textarea.add(messageArea);
+    send = new JButton("Send");
+    send.addActionListener(this);
+    textarea.add(send);
+
+
     c = new GridBagConstraints();
     c.gridx = 0;
     c.gridy = 3;
     c.gridwidth = 4;
     c.gridheight = 1;
     c.fill = GridBagConstraints.BOTH;
-    textarea.setBackground(Color.blue);
-    textarea.add(new JTextArea());
     add(textarea, c);
 
     contacts = new ContactsPanel(this);
@@ -132,12 +138,10 @@ public class ClientGUI extends JFrame implements ActionListener {
   public void messageReceived(Message message){
     switch(message.getType()) {
       case Message.MESSAGE:
-//        ta.append(message.getMessage());
         generalRoom.add(message);
         break;
       case Message.USER:
         OneToOneMessage oms = (OneToOneMessage) message;
-        //ta.append("[" + oms.from + "]: " + oms.getMessage());
         ConversationTab ct = findOrCreateTab(oms.from);
         ct.add(message);
         break;
@@ -167,22 +171,17 @@ public class ClientGUI extends JFrame implements ActionListener {
     return null;
   }
 
-  public void actionPerformed(ActionEvent e) {
-    Object o = e.getSource();
-    if(o == logout) {
-      client.send(new Message(Message.LOGOUT));
-      return;
-    }
-    if(o == whoIsIn) {
-      client.send(new Message(Message.WHOISIN));
-      return;
-    }
 
-    if(connected) {
-      client.send(new Message(Message.MESSAGE, tf.getText()));
-      tf.setText("");
-      return;
-    }
+  public void actionPerformed(ActionEvent e) {
+    ConversationTab curChat = (ConversationTab) tabbedPane.getSelectedComponent();
+    String msg = curChat.getMessage(messageArea.getText());
+    Sender sender = new Sender(client);
+    RequestParser parser = new RequestParser(msg);
+    Message to_send = parser.parse();
+    sender.send(parser.parse());
+    if(!curChat.isGeneral())
+      curChat.add(client.getUsername() + ": "+ messageArea.getText());
+    messageArea.setText("");
   }
 
   // to start the whole thing the client
