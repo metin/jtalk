@@ -71,68 +71,9 @@ public class ClientGUI extends JFrame implements ActionListener {
     c.gridwidth = 1;
     c.gridheight = 4;
     c.fill = GridBagConstraints.BOTH;
-    contacts.setBackground(Color.red);
     contacts.setPreferredSize(new Dimension(150, 400));
     add(contacts, c);
-
-
-    // // The NorthPanel with:
-    // JPanel northPanel = new JPanel(new GridLayout(3,1));
-    // // the client name anmd the port number
-    // JPanel serverAndPort = new JPanel(new GridLayout(1,5, 1, 3));
-    // // the two JTextField with default value for client address and port number
-    // tfServer = new JTextField(host);
-    // tfPort = new JTextField("" + port);
-    // tfPort.setHorizontalAlignment(SwingConstants.RIGHT);
-
-    // serverAndPort.add(new JLabel("Server Address:  "));
-    // serverAndPort.add(tfServer);
-    // serverAndPort.add(new JLabel("Port Number:  "));
-    // serverAndPort.add(tfPort);
-    // serverAndPort.add(new JLabel(""));
-    // // adds the Server an port field to the GUI
-    // northPanel.add(serverAndPort);
-
-    // // the Label and the TextField
-    // label = new JLabel("Enter your username below", SwingConstants.CENTER);
-    // northPanel.add(label);
-    // tf = new JTextField("Anonymous");
-    // tf.setBackground(Color.WHITE);
-    // northPanel.add(tf);
-    // add(northPanel, BorderLayout.NORTH);
-
-    // // The CenterPanel which is the chat room
-    // ta = new JTextArea("Welcome to the Chat room\n", 80, 80);
-    // JPanel centerPanel = new JPanel(new GridLayout(1,1));
-    // centerPanel.add(new JScrollPane(ta));
-    // ta.setEditable(false);
-    // add(centerPanel, BorderLayout.CENTER);
-
-    // // the 3 buttons
-    // login = new JButton("Login");
-    // login.addActionListener(this);
-    // logout = new JButton("Logout");
-    // logout.addActionListener(this);
-    // logout.setEnabled(false);
-    // whoIsIn = new JButton("Who is in");
-    // whoIsIn.addActionListener(this);
-    // whoIsIn.setEnabled(false);
-
-    // JPanel southPanel = new JPanel();
-    // southPanel.add(login);
-    // southPanel.add(logout);
-    // southPanel.add(whoIsIn);
-    // add(southPanel, BorderLayout.SOUTH);
-
     setDefaultCloseOperation(EXIT_ON_CLOSE);
-    setSize(600, 600);
-    setVisible(true);
-
-    // int portNumber = 1500;
-    // String serverAddress = "localhost";
-    // String userName = "MetinGUI";
-    // client = new Client(serverAddress, portNumber, userName, this);
-    // client.connect();
   }
 
   public void messageReceived(Message message){
@@ -184,7 +125,6 @@ public class ClientGUI extends JFrame implements ActionListener {
     messageArea.setText("");
   }
 
-  // to start the whole thing the client
 //   public static void main(String[] args) {
 //     try {
 //       //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");

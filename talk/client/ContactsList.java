@@ -12,25 +12,8 @@ public class ContactsList extends JList {
   ContactsList(DefaultListModel contactsListModel, ContactsPanel contactsPanel) {
     super(contactsListModel);
     this.contactsPanel = contactsPanel;
-    //this.addListSelectionListener(new ConatacsListActionListener());
     this.addMouseListener(new ConatacsListMouseAdapter());
   }
-
-  // public void actionPerformed(ActionEvent e) {
-  //   Object o = e.getSource();
-  //   System.out.println(o);
-  // }
-
-
-  // class ConatacsListActionListener implements ListSelectionListener {
-
-  //   public void valueChanged(ListSelectionEvent e) {
-  //     if(e.getValueIsAdjusting()) return;
-  //     ContactsList cl = (ContactsList) e.getSource();
-  //     System.out.println(cl.getSelectedIndex());
-
-  //   }
-  // }
 
   class ConatacsListMouseAdapter implements MouseListener {
 
@@ -48,19 +31,15 @@ public class ContactsList extends JList {
     }
 
     public void mousePressed(MouseEvent e) {
-
     }
 
     public void mouseReleased(MouseEvent e) {
-
     }
 
     public void mouseEntered(MouseEvent e) {
-
     }
 
     public void mouseExited(MouseEvent e) {
-
     }
 
   }

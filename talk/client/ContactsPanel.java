@@ -59,7 +59,6 @@ public class ContactsPanel extends JPanel implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     Object o = e.getSource();
     if(o == logout) {
-      //client.send(new Message(Message.LOGOUT));
       return;
     }
 
@@ -88,24 +87,7 @@ public class ContactsPanel extends JPanel implements ActionListener {
       RequestParser parser = new RequestParser("whoisin");
       Message to_send = parser.parse();
       sender.send(parser.parse());
-
-      // if(!client.connect())
-      //   return;
-      // tf.setText("");
-      // label.setText("Enter your message below");
-      // connected = true;
-      // login.setEnabled(false);
-      // logout.setEnabled(true);
-      // whoIsIn.setEnabled(true);
-      // tfServer.setEditable(false);
-      // tfPort.setEditable(false);
-      // tf.addActionListener(this);
     }
-
-
   }
-
-
-
 }
 
