@@ -78,6 +78,7 @@ public class ClientGUI extends JFrame implements ActionListener {
     c.gridy = 0;
     c.gridwidth = 1;
     c.gridheight = 4;
+    c.insets = new Insets(0,5,0,0);
     c.fill = GridBagConstraints.BOTH;
     contacts.setPreferredSize(new Dimension(150, 400));
     add(contacts, c);
