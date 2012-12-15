@@ -8,10 +8,6 @@ import java.util.*;
 
 public class ClientGUI extends JFrame implements ActionListener {
 
-  private static final long serialVersionUID = 1L;
-  private JLabel label;
-  private JTextField tf;
-  private JTextField tfServer, tfPort;
   private JButton send;
   private ConversationTab generalRoom;
   private boolean connected;
@@ -47,14 +43,16 @@ public class ClientGUI extends JFrame implements ActionListener {
     add(conversations, c);
 
     JPanel textarea = new JPanel();
-    textarea.setPreferredSize(new Dimension(450, 100));
-    textarea.setLayout(new GridLayout(1, 2));
+    setPreferredSize(new Dimension(450, 110));
+
+    textarea.setLayout(new GridLayout(1,1));
     messageArea = new JTextArea();
-    textarea.add(messageArea);
+    JScrollPane scrollPane = new JScrollPane(messageArea);
+    textarea.add(scrollPane);
+
     send = new JButton("Send");
     send.addActionListener(this);
     textarea.add(send);
-
 
     c = new GridBagConstraints();
     c.gridx = 0;
