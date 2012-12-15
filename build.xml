@@ -30,13 +30,29 @@
         <java jar="build/jar/tserver.jar" fork="true"/>
     </target>
 
-    <target name="run_c">
+    <target name="run_c_term">
         <java jar="build/jar/tclient.jar" fork="true">
-            <arg value="${arg0}"/>
+            <arg value="${args}"/>
+        </java>
+    </target>
+
+    <target name="run_c_gui">
+        <java jar="build/jar/tclient.jar" fork="true">
+            <arg value="${args}"/>
         </java>
     </target>
 
 </project>
 <!--
 java -jar tclient.jar talk.client.Start metin
+
+alias recompile='cd ~/Dropbox/NJIT/CS656/talk;ant clean;ant compile;ant jar_s;ant jar_c'
+alias rungic='cd ~/Dropbox/NJIT/CS656/talk/build/classes;java talk.client.ClientGUI'
+alias runcl='cd ~/Dropbox/NJIT/CS656/talk/build/classes;java talk.client.Start metin'
+
+
+ava -jar build/jar/tclient.jar talk.client.Start console u1 localhost 1500
+
+java -jar build/jar/tclient.jar talk.client.Start GUI
+
 -->
