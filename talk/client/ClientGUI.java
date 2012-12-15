@@ -186,6 +186,12 @@ public class ClientGUI extends JFrame implements ActionListener {
 
   // to start the whole thing the client
   public static void main(String[] args) {
+    try {
+      //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+      UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+    } catch(Exception e) {
+      System.out.println("Error setting Motif LAF: " + e);
+    }
     new ClientGUI("localhost", 1500);
   }
 
