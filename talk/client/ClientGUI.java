@@ -45,14 +45,24 @@ public class ClientGUI extends JFrame implements ActionListener {
     JPanel textarea = new JPanel();
     setPreferredSize(new Dimension(450, 110));
 
-    textarea.setLayout(new GridLayout(1,1));
+    textarea.setLayout(new GridBagLayout());
     messageArea = new JTextArea();
     JScrollPane scrollPane = new JScrollPane(messageArea);
-    textarea.add(scrollPane);
+    GridBagConstraints gBC = new GridBagConstraints();
+    gBC.fill = GridBagConstraints.BOTH;
+    gBC.weightx = 4;
+    gBC.weighty = 1.5;
+    gBC.gridx = 0;
+    gBC.gridy = 0;
+
+    textarea.add(scrollPane, gBC);
 
     send = new JButton("Send");
     send.addActionListener(this);
-    textarea.add(send);
+    gBC.weightx = 1;
+    gBC.gridx = 3;
+    gBC.gridy = 0;
+    textarea.add(send, gBC);
 
     c = new GridBagConstraints();
     c.gridx = 0;

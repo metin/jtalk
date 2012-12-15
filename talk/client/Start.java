@@ -24,6 +24,7 @@ public class Start {
         System.out.println("Error setting Motif LAF: " + e);
       }
       JFrame cl = new ClientGUI("localhost", 1500);
+      cl.setDefaultLookAndFeelDecorated(true);
       cl.setSize(680, 480);
       cl.setVisible(true);
     } else {
