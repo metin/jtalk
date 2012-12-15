@@ -13,6 +13,7 @@ public class ConversationTab extends JPanel implements Comparable, ActionListene
 
   ConversationTab() {
     super();
+    ta.setEditable(false);
     JScrollPane scrollPane = new JScrollPane(ta);
     setPreferredSize(new Dimension(450, 110));
     setLayout(new GridLayout(1, 1));
