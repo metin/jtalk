@@ -38,10 +38,12 @@ public class ContactsList extends JList {
       ContactsList cl = (ContactsList) e.getSource();
       if (e.getClickCount() == 2) {
         int index = cl.locationToIndex(e.getPoint());
-        String us = (String)cl.getModel().getElementAt(index);
-        System.out.println("Double clicked on Item " + index + ": us:" + us);
-        String[] uname = us.split(":");
-        contactsPanel.clientGUI.findOrCreateTab(uname[uname.length-1]);
+        try {
+          String us = (String)cl.getModel().getElementAt(index);
+          System.out.println("Double clicked on Item " + index + ": us:" + us);
+          String[] uname = us.split(":");
+          contactsPanel.clientGUI.findOrCreateTab(uname[uname.length-1]);
+        } catch (Exception ex) { }
       }
     }
 
